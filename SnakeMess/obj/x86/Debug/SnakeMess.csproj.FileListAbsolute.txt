@@ -9,3 +9,5 @@ C:\_MyStuff_\Westerdals Oslo ACT\PG3300_SoftwareDesign\Innlevering_Eksamen\Arbei
 C:\_MyStuff_\Westerdals Oslo ACT\PG3300_SoftwareDesign\Innlevering_Eksamen\Arbeidskrav\PG3300_Innlevering_Kode\SnakeMess\obj\x86\Debug\SnakeMess.csproj.CoreCompileInputs.cache
 C:\_MyStuff_\Westerdals Oslo ACT\PG3300_SoftwareDesign\Innlevering_Eksamen\Arbeidskrav\PG3300_Innlevering_Kode\SnakeMess\obj\x86\Debug\SnakeMess.exe
 C:\_MyStuff_\Westerdals Oslo ACT\PG3300_SoftwareDesign\Innlevering_Eksamen\Arbeidskrav\PG3300_Innlevering_Kode\SnakeMess\obj\x86\Debug\SnakeMess.pdb
+C:\Users\rator\Desktop\PG3300\SnakeMess\obj\x86\Debug\SnakeMess.exe
+C:\Users\rator\Desktop\PG3300\SnakeMess\obj\x86\Debug\SnakeMess.pdb
