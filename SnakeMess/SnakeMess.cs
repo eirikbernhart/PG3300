@@ -39,6 +39,7 @@ namespace SnakeMess
 						spot = false;
 						break;
 					}
+
 				if (spot) {
 					Console.ForegroundColor = ConsoleColor.Green; Console.SetCursorPosition(app.X, app.Y); Console.Write("$");
 					break;
@@ -46,6 +47,7 @@ namespace SnakeMess
 			}
 			Stopwatch t = new Stopwatch();
 			t.Start();
+
 			while (!gg) {
 				if (Console.KeyAvailable) {
 					ConsoleKeyInfo cki = Console.ReadKey(true);
@@ -62,6 +64,7 @@ namespace SnakeMess
 					else if (cki.Key == ConsoleKey.LeftArrow && last != 1)
 						newDir = 3;
 				}
+
 				if (!pause) {
 					if (t.ElapsedMilliseconds < 100)
 						continue;
