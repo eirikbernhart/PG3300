@@ -7,5 +7,6 @@ namespace SnakeMess
 {
     class Apple
     {
+        //GIT edit test
     }
 }
