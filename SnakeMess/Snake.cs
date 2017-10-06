@@ -8,46 +8,47 @@ namespace SnakeMess
     class Snake
     {
 
-        class Direction
-        {
-            static int LEFT = 
-        }
-
-        List<Point> snake; 
-        Snake()
+        Direction moveDir = new Direction(2);
+        List<Point> snake;
+        public Snake()
         {
             snake = new List<Point>();
         }
 
-        int Length()
+        public int Length()
         {
             return snake.Count();
         }
 
-        Point AddTail(Point point)
+        public Point AddTail(Point point)
         {
             snake.Add(point);
             return point;
         }
 
-        Point GetHead()
+        public Point GetHead()
         {
             return snake.First();
         }
 
-        Point GetEnd()
+        public Point GetEnd()
         {
             return snake.Last();
         }
 
-        void RemoveLast()
+        public void RemoveLast()
         {
             snake.RemoveAt(Length());
         }
 
-        void RemoveTailAt(int i)
+        public void RemoveTailAt(int i)
         {
             snake.RemoveAt(i);
+        }
+
+        public Direction GetDirection()
+        {
+            return moveDir;
         }
     }
 }

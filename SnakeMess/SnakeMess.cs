@@ -16,75 +16,106 @@ using System.Diagnostics;
 namespace SnakeMess
 {
 
-	class SnakeMess
-	{
-		public static void Main(string[] arguments)
-		{
-			bool gg = false, pause = false, inUse = false;
-			short newDir = 2; // 0 = up, 1 = right, 2 = down, 3 = left
-			short last = newDir;
-			int boardW = Console.WindowWidth, boardH = Console.WindowHeight;
-			Random rng = new Random();
-			Point app = new Point();
-			List<Point> snake = new List<Point>();
-			snake.Add(new Point(10, 10)); snake.Add(new Point(10, 10)); snake.Add(new Point(10, 10)); snake.Add(new Point(10, 10));
-			Console.CursorVisible = false;
-			Console.Title = "Westerdals Oslo ACT - SNAKE";
-			Console.ForegroundColor = ConsoleColor.Green; Console.SetCursorPosition(10, 10); Console.Write("@");
-			while (true) {
-				app.X = rng.Next(0, boardW); app.Y = rng.Next(0, boardH);
-				bool spot = true;
-				foreach (Point i in snake)
-					if (i.X == app.X && i.Y == app.Y) {
-						spot = false;
-						break;
-					}
+    class SnakeMess
+    {
 
-				if (spot) {
-					Console.ForegroundColor = ConsoleColor.Green; Console.SetCursorPosition(app.X, app.Y); Console.Write("$");
-					break;
-				}
-			}
-			Stopwatch t = new Stopwatch();
-			t.Start();
+        Snake snake;
+
+        bool gameOver;
+        bool pause;
+
+        SnakeMess()
+        {
+            snake = new Snake();
+            gameOver = false;
+            pause = false;
+        }
+
+        private void SetKeys()
+        {
+            if (Console.KeyAvailable)
+            {
+
+                Direction lastSnakeDir = snake.GetDirection().GetLast();
+                ConsoleKeyInfo cki = Console.ReadKey(true);
+                if (cki.Key == ConsoleKey.Escape)
+                    gameOver = true;
+                else if (cki.Key == ConsoleKey.Spacebar)
+                    pause = !pause;
+                else if (cki.Key == ConsoleKey.UpArrow && lastSnakeDir != 2)
+                    snake.GetDirection().Set(Direction.UP);
+                else if (cki.Key == ConsoleKey.RightArrow && lastSnakeDir != 3)
+                    snake.GetDirection().Set(Direction.RIGHT);
+                else if (cki.Key == ConsoleKey.DownArrow && lastSnakeDir != 0)
+                    snake.GetDirection().Set(Direction.DOWN);
+                else if (cki.Key == ConsoleKey.LeftArrow && lastSnakeDir != 1)
+                    snake.GetDirection().Set(Direction.LEFT);
+            }
+        }
+
+        private void MoveHead()
+        {
+            Point tail = new Point(snake.GetHead());
+            Point head = new Point(snake.GetEnd());
+            Point newH = new Point(head);
+            switch (snake.GetDirection())
+            {
+                case Direction.UP:
+                    newH.Y -= 1;
+                    break;
+                case Direction.RIGHT:
+                    newH.X += 1;
+                    break;
+                case Direction.DOWN:
+                    newH.Y += 1;
+                    break;
+                default:
+                    newH.X -= 1;
+                    break;
+            }
+
+        public static void Main(string[] arguments)
+        {
+            SnakeMess snakeMess = new SnakeMess();
+            bool gg = false, pause = false, inUse = false;
+            short newDir = 2; // 0 = up, 1 = right, 2 = down, 3 = left
+            short last = newDir;
+            int boardW = Console.WindowWidth, boardH = Console.WindowHeight;
+            Random rng = new Random();
+            Point app = new Point();
+            List<Point> snake = new List<Point>();
+            snake.Add(new Point(10, 10)); snake.Add(new Point(10, 10)); snake.Add(new Point(10, 10)); snake.Add(new Point(10, 10));
+            Console.CursorVisible = false;
+            Console.Title = "Westerdals Oslo ACT - SNAKE";
+            Console.ForegroundColor = ConsoleColor.Green; Console.SetCursorPosition(10, 10); Console.Write("@");
+            while (true) {
+                app.X = rng.Next(0, boardW); app.Y = rng.Next(0, boardH);
+                bool spot = true;
+                foreach (Point i in snake)
+                    if (i.X == app.X && i.Y == app.Y) {
+                        spot = false;
+                        break;
+                    }
+
+                if (spot) {
+                    Console.ForegroundColor = ConsoleColor.Green; Console.SetCursorPosition(app.X, app.Y); Console.Write("$");
+                    break;
+                }
+            }
+            Stopwatch t = new Stopwatch();
+            t.Start();
+
+            
 
 			while (!gg) {
-				if (Console.KeyAvailable) {
-					ConsoleKeyInfo cki = Console.ReadKey(true);
-					if (cki.Key == ConsoleKey.Escape)
-						gg = true;
-					else if (cki.Key == ConsoleKey.Spacebar)
-						pause = !pause;
-					else if (cki.Key == ConsoleKey.UpArrow && last != 2)
-						newDir = 0;
-					else if (cki.Key == ConsoleKey.RightArrow && last != 3)
-						newDir = 1;
-					else if (cki.Key == ConsoleKey.DownArrow && last != 0)
-						newDir = 2;
-					else if (cki.Key == ConsoleKey.LeftArrow && last != 1)
-						newDir = 3;
-				}
+
+                snakeMess.SetKeys();
 
 				if (!pause) {
 					if (t.ElapsedMilliseconds < 100)
 						continue;
 					t.Restart();
-					Point tail = new Point(snake.First());
-					Point head = new Point(snake.Last());
-					Point newH = new Point(head);
-					switch (newDir) {
-						case 0:
-							newH.Y -= 1;
-							break;
-						case 1:
-							newH.X += 1;
-							break;
-						case 2:
-							newH.Y += 1;
-							break;
-						default:
-							newH.X -= 1;
-							break;
+					
 					}
 					if (newH.X < 0 || newH.X >= boardW)
 						gg = true;
@@ -134,6 +165,13 @@ namespace SnakeMess
 					}
 				}
 			}
+
+
+
+
+
+
+
 		}
-	}
+    }
 }
