@@ -54,7 +54,7 @@ namespace SnakeMess
             }
         }
 
-        private void MoveHead()
+        private Point MoveHead()
         {
             Point tail = new Point(snake.GetHead());
             Point head = new Point(snake.GetEnd());
@@ -74,6 +74,8 @@ namespace SnakeMess
                     newH.X -= 1;
                     break;
             }
+
+            return newH;
         }
 
         private void WindowSettings()
