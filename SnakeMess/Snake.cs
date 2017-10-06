@@ -31,6 +31,11 @@ namespace SnakeMess
             return Points.First();
         }
 
+        public void SetHead(Point newH)
+        {
+            Points[0] = newH;
+        }
+
         public Point GetEnd()
         {
             return Points.Last();
@@ -41,7 +46,7 @@ namespace SnakeMess
             Points.RemoveAt(Length());
         }
 
-        public void RemoveTailAt(int i)
+        public void RemovePointAt(int i)
         {
             Points.RemoveAt(i);
         }

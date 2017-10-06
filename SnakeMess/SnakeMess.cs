@@ -40,9 +40,9 @@ namespace SnakeMess
                 Direction lastSnakeDir = snake.GetDirection().GetLast();
                 ConsoleKeyInfo cki = Console.ReadKey(true);
                 if (cki.Key == ConsoleKey.Escape)
-                    gameOver = true;
+                    GameOver = true;
                 else if (cki.Key == ConsoleKey.Spacebar)
-                    pause = !pause;
+                    Pause = false;
                 else if (cki.Key == ConsoleKey.UpArrow && lastSnakeDir != 2)
                     snake.GetDirection().Set(Direction.UP);
                 else if (cki.Key == ConsoleKey.RightArrow && lastSnakeDir != 3)
@@ -54,10 +54,9 @@ namespace SnakeMess
             }
         }
 
-        private Point MoveHead()
+        private Point MoveHead(Point head)
         {
-            Point tail = new Point(snake.GetHead());
-            Point head = new Point(snake.GetEnd());
+            
             Point newH = new Point(head);
             switch (snake.GetDirection().AsInt())
             {
@@ -75,6 +74,7 @@ namespace SnakeMess
                     break;
             }
 
+            snake.SetHead(newH);
             return newH;
         }
 
@@ -105,6 +105,69 @@ namespace SnakeMess
             else return apple;
         }
 
+        private bool IsHeadOnApple(Point head, Point apple)
+        {
+            return head.X == apple.X && head.Y == apple.Y;
+        }
+
+        private void OnAppleEaten(Board board)
+        {
+            if (snake.Length() + 1 >= board.Width * board.Height)
+                // No more room to place apples - game over.
+                GameOver = true;
+            else
+            {
+                PlaceApple(board);
+            }
+        }
+
+        private bool IsWindowCollide(Point head, Board board)
+        {
+            if (head.X < 0 || head.X >= board.Width)
+                return true;
+            else if (head.Y < 0 || head.Y >= board.Height)
+                return true;
+
+            return false;
+        }
+
+        private void OnGameOver(Snake snake, Point apple, Point tail, Point head)
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.SetCursorPosition(snake.GetHead().X, snake.GetHead().Y);
+            Console.Write("0");
+
+            if (!InUse)
+            {
+                Console.SetCursorPosition(tail.X, tail.Y);
+                Console.Write(" ");
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.SetCursorPosition(apple.X, apple.Y);
+                Console.Write("$");
+                InUse = false;
+            }
+
+            snake.AddPoint(snake.GetHead());
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.SetCursorPosition(snake.GetHead().X, snake.GetHead().Y);
+            Console.Write("@");
+        }
+
+        private void OnSelfCollide()
+        {
+            snake.RemovePointAt(0);
+            foreach (Point x in snake.Points)
+                if (x.X == snake.GetHead().X && x.Y == snake.GetHead().Y)
+                {
+                    // Death by accidental self-cannibalism.
+                    GameOver = true;
+                    break;
+                }
+        }
+
         public static void Main(string[] arguments)
         {
             SnakeMess snakeMess = new SnakeMess();
@@ -112,9 +175,9 @@ namespace SnakeMess
 
             snakeMess.GameOver = false;
             snakeMess.Pause = false;
-            snakeMess.InUse = false;
+            snakeMess.InUse = true;
 
-            Direction newDir = new Direction(Direction.DOWN); // 0 = up, 1 = right, 2 = down, 3 = left
+            Direction newDir = new Direction(Direction.DOWN);
             Direction lastDir = newDir.GetLast();
 
             Board board = new Board();
@@ -126,87 +189,47 @@ namespace SnakeMess
 
             snakeMess.WindowSettings();
 
-            snakeMess.PlaceApple(board);
+            Point apple = snakeMess.PlaceApple(board);
 
             Stopwatch t = new Stopwatch();
             t.Start();
 
-            
-
-			while (!snakeMess.GameOver) {
+            while (!snakeMess.GameOver)
+            {
 
                 snakeMess.SetKeys();
 
-				if (!snakeMess.Pause) {
-					if (t.ElapsedMilliseconds < 100)
-						continue;
+                if (!snakeMess.Pause)
+                {
+                    if (t.ElapsedMilliseconds < 100)
+                        continue;
 
-					t.Restart();
-                    snakeMess.MoveHead();
-				}
+                    t.Restart();
 
+                    Point tail = new Point(snake.GetHead());
+                    Point head = new Point(snake.GetEnd());
+                    Point newHead = snakeMess.MoveHead(head);
 
-					if (newH.X < 0 || newH.X >= boardW)
-						snakeMess.GameOver = true;
-					else if (newH.Y < 0 || newH.Y >= boardH)
+                    if (snakeMess.IsWindowCollide(newHead, board))
                         snakeMess.GameOver = true;
 
 
-					if (newH.X == app.X && newH.Y == app.Y) {
-						if (snake.Count + 1 >= boardW * boardH)
-                            // No more room to place apples - game over.
-                            snakeMess.GameOver = true;
-						else {
-							while (true) {
-								app.X = random.Next(0, boardW); app.Y = random.Next(0, boardH);
-								bool found = true;
-								foreach (Point i in snake)
-									if (i.X == app.X && i.Y == app.Y) {
-										found = false;
-										break;
-									}
-								if (found) {
-									inUse = true;
-									break;
-								}
-							}
-						}
-					}
+                    if (snakeMess.IsHeadOnApple(newHead, apple))
+                        snakeMess.OnAppleEaten(board);
+
+                    if (!snakeMess.InUse)
+                    {
+                        snakeMess.OnSelfCollide();
+                    }
 
 
-					if (!inUse) {
-						snake.RemoveAt(0);
-						foreach (Point x in snake)
-							if (x.X == newH.X && x.Y == newH.Y) {
-								// Death by accidental self-cannibalism.
-								gg = true;
-								break;
-							}
-					}
+                    if (snakeMess.GameOver)
+                    {
+                        snakeMess.OnGameOver(snake, apple, tail, head);
+                    }
+                }
+            }
 
-
-					if (!gg) {
-						Console.ForegroundColor = ConsoleColor.Yellow;
-						Console.SetCursorPosition(head.X, head.Y); Console.Write("0");
-						if (!inUse) {
-							Console.SetCursorPosition(tail.X, tail.Y); Console.Write(" ");
-						} else {
-							Console.ForegroundColor = ConsoleColor.Green; Console.SetCursorPosition(app.X, app.Y); Console.Write("$");
-							inUse = false;
-						}
-						snake.Add(newH);
-						Console.ForegroundColor = ConsoleColor.Yellow; Console.SetCursorPosition(newH.X, newH.Y); Console.Write("@");
-						last = newDir;
-					}
-				}
-			}
-
-
-
-
-
-
-
-		
+        }
     }
 }
