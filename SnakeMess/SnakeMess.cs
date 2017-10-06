@@ -19,16 +19,17 @@ namespace SnakeMess
     class SnakeMess
     {
 
-        Snake snake;
+        public Snake snake { get; private set; }
 
-        bool gameOver;
-        bool pause;
+        public bool GameOver { get; private set; }
+        public bool Pause { get; private set; }
+        public bool InUse { get; private set; }
 
         SnakeMess()
         {
             snake = new Snake();
-            gameOver = false;
-            pause = false;
+            GameOver = false;
+            Pause = false;
         }
 
         private void SetKeys()
@@ -58,7 +59,7 @@ namespace SnakeMess
             Point tail = new Point(snake.GetHead());
             Point head = new Point(snake.GetEnd());
             Point newH = new Point(head);
-            switch (snake.GetDirection())
+            switch (snake.GetDirection().AsInt())
             {
                 case Direction.UP:
                     newH.Y -= 1;
@@ -73,61 +74,89 @@ namespace SnakeMess
                     newH.X -= 1;
                     break;
             }
+        }
+
+        private void WindowSettings()
+        {
+            Console.CursorVisible = false;
+            Console.Title = "Westerdals Oslo ACT - SNAKE";
+            Console.ForegroundColor = ConsoleColor.Green; Console.SetCursorPosition(10, 10); Console.Write("@");
+        }
+
+        private Point PlaceApple(Board board)
+        {
+            Point apple = Point.GetRandomPoint(board);
+
+            bool IsSpotAvailable() {
+                foreach (Point i in snake.Points)
+                    if (i.X != apple.X && i.Y != apple.Y)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.SetCursorPosition(apple.X, apple.Y);
+                        Console.Write("$");
+                        return true;
+                    }
+                return false;
+            }
+
+            if (!IsSpotAvailable()) return PlaceApple(board);
+            else return apple;
+        }
 
         public static void Main(string[] arguments)
         {
             SnakeMess snakeMess = new SnakeMess();
-            bool gg = false, pause = false, inUse = false;
-            short newDir = 2; // 0 = up, 1 = right, 2 = down, 3 = left
-            short last = newDir;
-            int boardW = Console.WindowWidth, boardH = Console.WindowHeight;
-            Random rng = new Random();
-            Point app = new Point();
-            List<Point> snake = new List<Point>();
-            snake.Add(new Point(10, 10)); snake.Add(new Point(10, 10)); snake.Add(new Point(10, 10)); snake.Add(new Point(10, 10));
-            Console.CursorVisible = false;
-            Console.Title = "Westerdals Oslo ACT - SNAKE";
-            Console.ForegroundColor = ConsoleColor.Green; Console.SetCursorPosition(10, 10); Console.Write("@");
-            while (true) {
-                app.X = rng.Next(0, boardW); app.Y = rng.Next(0, boardH);
-                bool spot = true;
-                foreach (Point i in snake)
-                    if (i.X == app.X && i.Y == app.Y) {
-                        spot = false;
-                        break;
-                    }
+            Snake snake = snakeMess.snake;
 
-                if (spot) {
-                    Console.ForegroundColor = ConsoleColor.Green; Console.SetCursorPosition(app.X, app.Y); Console.Write("$");
-                    break;
-                }
-            }
+            snakeMess.GameOver = false;
+            snakeMess.Pause = false;
+            snakeMess.InUse = false;
+
+            Direction newDir = new Direction(Direction.DOWN); // 0 = up, 1 = right, 2 = down, 3 = left
+            Direction lastDir = newDir.GetLast();
+
+            Board board = new Board();
+
+            Random random = new Random();
+
+            for (int i = 0; i < 4; i++)
+                snakeMess.snake.AddPoint(new Point(10, 10));
+
+            snakeMess.WindowSettings();
+
+            snakeMess.PlaceApple(board);
+
             Stopwatch t = new Stopwatch();
             t.Start();
 
             
 
-			while (!gg) {
+			while (!snakeMess.GameOver) {
 
                 snakeMess.SetKeys();
 
-				if (!pause) {
+				if (!snakeMess.Pause) {
 					if (t.ElapsedMilliseconds < 100)
 						continue;
+
 					t.Restart();
-					
-					}
+                    snakeMess.MoveHead();
+				}
+
+
 					if (newH.X < 0 || newH.X >= boardW)
-						gg = true;
+						snakeMess.GameOver = true;
 					else if (newH.Y < 0 || newH.Y >= boardH)
-						gg = true;
+                        snakeMess.GameOver = true;
+
+
 					if (newH.X == app.X && newH.Y == app.Y) {
 						if (snake.Count + 1 >= boardW * boardH)
-							// No more room to place apples - game over.
-							gg = true;
+                            // No more room to place apples - game over.
+                            snakeMess.GameOver = true;
 						else {
 							while (true) {
-								app.X = rng.Next(0, boardW); app.Y = rng.Next(0, boardH);
+								app.X = random.Next(0, boardW); app.Y = random.Next(0, boardH);
 								bool found = true;
 								foreach (Point i in snake)
 									if (i.X == app.X && i.Y == app.Y) {
@@ -141,6 +170,8 @@ namespace SnakeMess
 							}
 						}
 					}
+
+
 					if (!inUse) {
 						snake.RemoveAt(0);
 						foreach (Point x in snake)
@@ -150,6 +181,8 @@ namespace SnakeMess
 								break;
 							}
 					}
+
+
 					if (!gg) {
 						Console.ForegroundColor = ConsoleColor.Yellow;
 						Console.SetCursorPosition(head.X, head.Y); Console.Write("0");
@@ -172,6 +205,6 @@ namespace SnakeMess
 
 
 
-		}
+		
     }
 }

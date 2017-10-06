@@ -9,41 +9,41 @@ namespace SnakeMess
     {
 
         Direction moveDir = new Direction(2);
-        List<Point> snake;
+        public List<Point> Points { get; private set; }
         public Snake()
         {
-            snake = new List<Point>();
+            Points = new List<Point>();
         }
 
         public int Length()
         {
-            return snake.Count();
+            return Points.Count();
         }
 
-        public Point AddTail(Point point)
+        public Point AddPoint(Point point)
         {
-            snake.Add(point);
+            Points.Add(point);
             return point;
         }
 
         public Point GetHead()
         {
-            return snake.First();
+            return Points.First();
         }
 
         public Point GetEnd()
         {
-            return snake.Last();
+            return Points.Last();
         }
 
         public void RemoveLast()
         {
-            snake.RemoveAt(Length());
+            Points.RemoveAt(Length());
         }
 
         public void RemoveTailAt(int i)
         {
-            snake.RemoveAt(i);
+            Points.RemoveAt(i);
         }
 
         public Direction GetDirection()

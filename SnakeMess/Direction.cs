@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SnakeMess
 {
-    class Direction
+    public class Direction
     {
         public const short UP = 0;
         public const short RIGHT = 1;
@@ -26,10 +26,10 @@ namespace SnakeMess
             return direction;
         }
 
-        public short Set(Direction d)
+        public short Set(short d)
         {
             lastDirection = direction;
-            direction = d.AsInt();
+            direction = d;
             return direction;
         }
 

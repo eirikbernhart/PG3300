@@ -7,23 +7,13 @@ namespace SnakeMess
 {
     class Board
     {
-        int boardX;
-        int boardY;
+        public int Width { get; private set; }
+        public int Height { get; private set; }
 
-        Board()
+        public Board()
         {
-            boardX = Console.WindowWidth;
-            boardY = Console.WindowHeight;
-        }
-
-        int getWidth()
-        {
-            return boardX;
-        }
-
-        int getHeight()
-        {
-            return boardY;
+            Width = Console.WindowWidth;
+            Height = Console.WindowHeight;
         }
     }
 }
