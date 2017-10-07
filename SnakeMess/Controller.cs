@@ -160,12 +160,12 @@ namespace SnakeMess
 
         public static void Main(string[] arguments)
         {
-            Controller snakeMess = new Controller();
-            Snake snake = snakeMess.snake;
+            Controller ctrlr = new Controller();
+            Snake snake = ctrlr.snake;
 
-            snakeMess.GameOver = false;
-            snakeMess.Pause = false;
-            snakeMess.InUse = true;
+            ctrlr.GameOver = false;
+            ctrlr.Pause = false;
+            ctrlr.InUse = true;
 
             Direction newDir = new Direction(Direction.DOWN);
             Direction lastDir = newDir.GetLast();
@@ -175,21 +175,21 @@ namespace SnakeMess
             Random random = new Random();
 
             for (int i = 0; i < 4; i++)
-                snakeMess.snake.AddPoint(new Point(10, 10));
+                ctrlr.snake.AddPoint(new Point(10, 10));
 
-            snakeMess.WindowSettings();
+            ctrlr.WindowSettings();
 
-            Point apple = snakeMess.PlaceApple(board);
+            Point apple = ctrlr.PlaceApple(board);
 
             Stopwatch t = new Stopwatch();
             t.Start();
 
-            while (!snakeMess.GameOver)
+            while (!ctrlr.GameOver)
             {
 
-                snakeMess.SetKeys();
+                ctrlr.SetKeys();
 
-                if (!snakeMess.Pause)
+                if (!ctrlr.Pause)
                 {
                     if (t.ElapsedMilliseconds < 100)
                         continue;
@@ -198,24 +198,24 @@ namespace SnakeMess
 
                     Point tail = new Point(snake.GetHead());
                     Point head = new Point(snake.GetEnd());
-                    Point newHead = snakeMess.MoveHead(head);
+                    Point newHead = ctrlr.MoveHead(head);
 
-                    if (snakeMess.IsWindowCollide(newHead, board))
-                        snakeMess.GameOver = true;
+                    if (ctrlr.IsWindowCollide(newHead, board))
+                        ctrlr.GameOver = true;
 
 
-                    if (snakeMess.IsHeadOnApple(newHead, apple))
-                        snakeMess.OnAppleEaten(board);
+                    if (ctrlr.IsHeadOnApple(newHead, apple))
+                        ctrlr.OnAppleEaten(board);
 
-                    if (!snakeMess.InUse)
+                    if (!ctrlr.InUse)
                     {
-                        snakeMess.OnSelfCollide();
+                        ctrlr.OnSelfCollide();
                     }
 
 
-                    if (snakeMess.GameOver)
+                    if (ctrlr.GameOver)
                     {
-                        snakeMess.OnGameOver(snake, apple, tail, head);
+                        ctrlr.OnGameOver(snake, apple, tail, head);
                     }
                 }
             }

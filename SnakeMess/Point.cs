@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SnakeMess
 {
-    class Point : Board
+    class Point
     {
         public const string Ok = "Ok";
 
