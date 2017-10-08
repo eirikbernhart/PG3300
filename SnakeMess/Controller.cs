@@ -32,7 +32,7 @@ namespace SnakeBeauty
                 if (cki.Key == ConsoleKey.Escape)
                     GameOver = true;
                 else if (cki.Key == ConsoleKey.Spacebar)
-                    Pause = false;
+                    Pause = !Pause;
                 else if (cki.Key == ConsoleKey.UpArrow && last != 2)
                     snake.ChangeDirection(Direction.UP);
                 else if (cki.Key == ConsoleKey.RightArrow && last != 3)
