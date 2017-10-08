@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SnakeMess
+namespace SnakeBeauty
 {
     class Snake
     {
 
-        Direction moveDir = new Direction(2);
+        public Direction moveDir;
         public List<Point> Points { get; private set; }
         public Snake()
         {
             Points = new List<Point>();
+            moveDir = new Direction(2);
         }
 
         public int Length()
@@ -28,22 +29,22 @@ namespace SnakeMess
 
         public Point GetHead()
         {
-            return Points.First();
+            return Points.Last();
         }
 
         public void SetHead(Point newH)
         {
-            Points[0] = newH;
+            Points.Add(newH);
         }
 
         public Point GetEnd()
         {
-            return Points.Last();
+            return Points.First();
         }
 
         public void RemoveLast()
         {
-            Points.RemoveAt(Length());
+            Points.RemoveAt(0);
         }
 
         public void RemovePointAt(int i)
@@ -54,6 +55,11 @@ namespace SnakeMess
         public Direction GetDirection()
         {
             return moveDir;
+        }
+
+        public short ChangeDirection(short s)
+        {
+            return moveDir.Set(s);
         }
     }
 }

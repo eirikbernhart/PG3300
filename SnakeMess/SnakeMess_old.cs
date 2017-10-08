@@ -13,9 +13,9 @@ using System.Diagnostics;
 //
 //          -Tomas
 //
-namespace SnakeMess
+namespace SnakeBeauty
 {
-        class SnakeMess
+        class SnakeMess_old
         {
             /*public static void Main(string[] arguments)
             {

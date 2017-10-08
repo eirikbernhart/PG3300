@@ -3,39 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SnakeMess
+namespace SnakeBeauty
 {
     public class Direction
     {
+
         public const short UP = 0;
         public const short RIGHT = 1;
         public const short DOWN = 2;
         public const short LEFT = 3;
 
         private short direction;
-        private short lastDirection;
 
         public Direction(short direction)
         {
             this.direction = direction;
-            this.lastDirection = this.direction;
-        }
-
-        public short AsInt()
-        {
-            return direction;
         }
 
         public short Set(short d)
         {
-            lastDirection = direction;
             direction = d;
             return direction;
-        }
-
-        public Direction GetLast()
-        {
-            return new Direction(lastDirection);
         }
 
         public static bool operator ==(Direction a, Direction b)
@@ -53,5 +41,16 @@ namespace SnakeMess
 
         public static bool operator !=(Direction a, Direction b) { return !(a == b); }
         public static bool operator !=(Direction a, int b) { return !(a == b); }
+
+        public override bool Equals(object obj)
+        {
+            if (obj.GetType() == typeof(short))
+            {
+                short s = (short) obj;
+                if (direction == s)
+                    return true;
+            }
+            return Equals(obj);
+        }
     }
 }
