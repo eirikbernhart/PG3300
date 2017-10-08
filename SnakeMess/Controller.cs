@@ -19,6 +19,7 @@ namespace SnakeMess
             snake = new Snake();
             GameOver = false;
             Pause = false;
+            InUse = false;
         }
 
         private void SetKeys()
@@ -121,7 +122,7 @@ namespace SnakeMess
             return false;
         }
 
-        private void OnGameOver(Snake snake, Point apple, Point tail, Point head)
+        private void writeTail(Snake snake, Point apple, Point tail, Point head)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.SetCursorPosition(snake.GetHead().X, snake.GetHead().Y);
@@ -146,7 +147,7 @@ namespace SnakeMess
             Console.Write("@");
         }
 
-        private void OnSelfCollide()
+        private void CheckForSelfCollide()
         {
             snake.RemovePointAt(0);
             foreach (Point x in snake.Points)
@@ -165,7 +166,7 @@ namespace SnakeMess
 
             ctrlr.GameOver = false;
             ctrlr.Pause = false;
-            ctrlr.InUse = true;
+            ctrlr.InUse = false;
 
             Direction newDir = new Direction(Direction.DOWN);
             Direction lastDir = newDir.GetLast();
@@ -209,13 +210,13 @@ namespace SnakeMess
 
                     if (!ctrlr.InUse)
                     {
-                        ctrlr.OnSelfCollide();
+                        ctrlr.CheckForSelfCollide();
                     }
 
 
-                    if (ctrlr.GameOver)
+                    if (!ctrlr.GameOver)
                     {
-                        ctrlr.OnGameOver(snake, apple, tail, head);
+                        ctrlr.writeTail(snake, apple, tail, head);
                     }
                 }
             }
