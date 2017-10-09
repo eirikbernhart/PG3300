@@ -5,6 +5,7 @@ using System.Diagnostics;
 
 namespace SnakeBeauty
 {
+    //Controls the game logic
     class Controller
     {
 
