@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SnakeBeauty
 {
-    // Defines the boundaries of the world
+    // Defines the boundaries of the world (game board/console)
     class Board
     {
         public int Width { get; private set; }
