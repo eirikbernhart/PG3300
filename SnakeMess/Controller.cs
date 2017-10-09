@@ -24,6 +24,7 @@ namespace SnakeBeauty
             InUse = false;
         }
 
+        //Checks for keypresses and does some functionality based on the key pressed.
         private void CheckKeys(Direction last)
         {
             if (Console.KeyAvailable)
@@ -43,7 +44,7 @@ namespace SnakeBeauty
                     snake.ChangeDirection(Direction.LEFT);
             }
         }
-
+        //Moves the head of the snake and returns it's new position (Point)
         private Point MoveHead(Point head)
         {
 
@@ -60,14 +61,14 @@ namespace SnakeBeauty
 
             return newH;
         }
-
+        //Does functionality like setting mouse pointer visibility, title, color, and writes the snake head at startup
         private void WindowSettings()
         {
             Console.CursorVisible = false;
             Console.Title = "Westerdals Oslo ACT - SNAKE";
             Console.ForegroundColor = ConsoleColor.Green; Console.SetCursorPosition(10, 10); Console.Write("@");
         }
-
+        //Places an apple at a random point on the board, returns the apples "Point"
         private Point PlaceApple(Board board)
         {
             Point apple = Point.GetRandomPoint(board);
@@ -89,12 +90,12 @@ namespace SnakeBeauty
             if (!IsSpotAvailable()) return PlaceApple(board);
             else return apple;
         }
-
+        //Returns true if the snake heads "Point" has the same position on the board as the apple
         private bool IsHeadOnApple(Point head)
         {
             return head.X == Apple.X && head.Y == Apple.Y;
         }
-
+        //Functionality for what happens when an apple is eaten.
         private void OnAppleEaten(Board board)
         {
             if (snake.Length() + 1 >= board.Width * board.Height)
@@ -105,7 +106,7 @@ namespace SnakeBeauty
                 Apple = PlaceApple(board);
             }
         }
-
+        //Returns true if Snake head collided with the window (hits the corner of the board)
         private bool IsWindowCollide(Point head, Board board)
         {
             if (head.X < 0 || head.X >= board.Width)
@@ -115,7 +116,7 @@ namespace SnakeBeauty
 
             return false;
         }
-
+        //Write updated snake to console
         private void WriteTail(Snake snake, Point tail, Point newH)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
@@ -140,7 +141,7 @@ namespace SnakeBeauty
             Console.SetCursorPosition(newH.X, newH.Y);
             Console.Write("@");
         }
-
+        //Functionality for what happens if the snake collides with itself
         private void CheckForSelfCollide(Point newH)
         {
             snake.RemovePointAt(0);
@@ -153,6 +154,7 @@ namespace SnakeBeauty
                 }
         }
 
+        //The games algorithm
         public static void Main(string[] arguments)
         {
             Controller ctrlr = new Controller();
