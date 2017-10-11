@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace SnakeBeauty
 {
-    //Represents a point on the board. Keeps track of the x and y coordinates
-    class Point
+    internal class Point
     {
         public int X; public int Y;
         public Point(int x = 0, int y = 0) { X = x; Y = y; }
@@ -14,9 +10,9 @@ namespace SnakeBeauty
 
         public static Point GetRandomPoint(Board board)
         {
-            Random rnd = new Random();
-            int x = rnd.Next(0, board.Width);
-            int y = rnd.Next(0, board.Height);
+            var rnd = new Random();
+            var x = rnd.Next(0, board.Width);
+            var y = rnd.Next(0, board.Height);
             return new Point(x, y);
         }
     }
