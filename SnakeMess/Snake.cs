@@ -5,6 +5,7 @@ using System.Text;
 
 namespace SnakeBeauty
 {
+    //The player of the game. It also holds a list of points making up the tail
     class Snake
     {
 

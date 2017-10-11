@@ -5,6 +5,7 @@ using System.Text;
 
 namespace SnakeBeauty
 {
+    //Represents a point on the board. Keeps track of the x and y coordinates
     class Point
     {
         public const string Ok = "Ok";

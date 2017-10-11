@@ -5,6 +5,7 @@ using System.Text;
 
 namespace SnakeBeauty
 {
+    //Keeps track of a certain direction given upon instantiating
     public class Direction
     {
 
@@ -15,11 +16,13 @@ namespace SnakeBeauty
 
         private short direction;
 
+        //Instantiates a new direction
         public Direction(short direction)
         {
             this.direction = direction;
         }
 
+        // Set new direction
         public short Set(short d)
         {
             direction = d;
