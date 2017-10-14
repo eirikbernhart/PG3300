@@ -1,17 +1,18 @@
 ﻿
 namespace SnakeBeauty
 {
-    internal class Direction
+    //Keeps track of a certain direction given upon instantiating
+    public class Direction
     {
-        protected bool Equals(Direction other)
-        {
-            return _direction == other._direction;
-        }
-
         public override int GetHashCode()
         {
             // ReSharper disable once NonReadonlyMemberInGetHashCode
             return _direction.GetHashCode();
+        }
+
+        protected bool Equals(Direction other)
+        {
+            return _direction == other._direction;
         }
 
         public const short Up = 0;
@@ -21,13 +22,13 @@ namespace SnakeBeauty
 
         private short _direction;
 
-        //Instantiates a new _direction
+        //Instantiates a new direction
         public Direction(short direction)
         {
             _direction = direction;
         }
 
-        // Set new _direction
+        // Set new direction
         public short Set(short d)
         {
             _direction = d;
@@ -43,7 +44,8 @@ namespace SnakeBeauty
 
         public static bool operator ==(Direction a, int b)
         {
-            return a != null && a._direction == b;
+            // ReSharper disable once PossibleNullReferenceException
+            return a._direction == b;
         }
 
         public static bool operator !=(Direction a, Direction b) { return !(a == b); }
@@ -57,6 +59,5 @@ namespace SnakeBeauty
                 return _direction == s || Equals(obj);
             }
         }
-
     }
 }

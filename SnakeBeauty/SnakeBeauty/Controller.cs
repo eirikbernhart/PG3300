@@ -48,8 +48,6 @@ namespace SnakeBeauty
                 case ConsoleKey.LeftArrow when last != 1:
                     Snake.ChangeDirection(Direction.Left);
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException();
             }
         }
         //Moves the head of the snake and returns it's new position (Point)
@@ -127,6 +125,7 @@ namespace SnakeBeauty
         //Write updated snake to console
         private void WriteTail(Snake snake, Point tail, Point newH)
         {
+            if (snake == null) throw new ArgumentNullException(nameof(snake));
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.SetCursorPosition(snake.GetHead().X, snake.GetHead().Y);
             Console.Write("0");
