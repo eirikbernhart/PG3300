@@ -27,8 +27,8 @@ namespace SnakeBeauty
         private void CheckKeys(Direction last)
         {
             if (!Console.KeyAvailable) return;
-            var cki = Console.ReadKey(true);
-            switch (cki.Key)
+            var consoleKeyInfo = Console.ReadKey(true);
+            switch (consoleKeyInfo.Key)
             {
                 case ConsoleKey.Escape:
                     GameOver = true;
@@ -54,25 +54,27 @@ namespace SnakeBeauty
         private Point MoveHead(Point head)
         {
 
-            var newH = new Point(head);
+            var newHead = new Point(head);
             var dir = Snake.GetDirection();
             if (dir == Direction.Up)
-                newH.Y -= 1;
+                newHead.Y -= 1;
             else if (dir == Direction.Right)
-                newH.X += 1;
+                newHead.X += 1;
             else if (dir == Direction.Down)
-                newH.Y += 1;
+                newHead.Y += 1;
             else
-                newH.X -= 1;
+                newHead.X -= 1;
 
-            return newH;
+            return newHead;
         }
         //Does functionality like setting mouse pointer visibility, title, color, and writes the snake head at startup
         private static void WindowSettings()
         {
             Console.CursorVisible = false;
             Console.Title = "Westerdals Oslo ACT - SNAKE";
-            Console.ForegroundColor = ConsoleColor.Green; Console.SetCursorPosition(10, 10); Console.Write("@");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.SetCursorPosition(10, 10);
+            Console.Write("@");
         }
         //Places an apple at a random point on the board, returns the apples "Point"
         private Point PlaceApple(Board board)
@@ -123,7 +125,7 @@ namespace SnakeBeauty
             return false;
         }
         //Write updated snake to console
-        private void WriteTail(Snake snake, Point tail, Point newH)
+        private void WriteTail(Snake snake, Point tail, Point newHead)
         {
             if (snake == null) throw new ArgumentNullException(nameof(snake));
             Console.ForegroundColor = ConsoleColor.Yellow;
@@ -143,17 +145,17 @@ namespace SnakeBeauty
                 InUse = false;
             }
 
-            snake.SetHead(newH);
+            snake.SetHead(newHead);
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.SetCursorPosition(newH.X, newH.Y);
+            Console.SetCursorPosition(newHead.X, newHead.Y);
             Console.Write("@");
         }
         //Functionality for what happens if the snake collides with itself
-        private void CheckForSelfCollide(Point newH)
+        private void CheckForSelfCollide(Point newHead)
         {
             Snake.RemovePointAt(0);
             foreach (var x in Snake.Points)
-                if (x.X == newH.X && x.Y == newH.Y)
+                if (x.X == newHead.X && x.Y == newHead.Y)
                 {
                     // Death by accidental self-cannibalism.
                     GameOver = true;
@@ -164,57 +166,57 @@ namespace SnakeBeauty
         //The games algorithm
         public static void Main(string[] arguments)
         {
-            var ctrlr = new Controller();
-            var snake = ctrlr.Snake;
+            var controller = new Controller();
+            var snake = controller.Snake;
 
-            ctrlr.GameOver = false;
-            ctrlr.Pause = false;
-            ctrlr.InUse = false;
+            controller.GameOver = false;
+            controller.Pause = false;
+            controller.InUse = false;
 
             var board = new Board();
 
             for (var i = 0; i < 4; i++)
-                ctrlr.Snake.AddPoint(new Point(10, 10));
+                controller.Snake.AddPoint(new Point(10, 10));
 
             WindowSettings();
 
-            ctrlr.Apple = ctrlr.PlaceApple(board);
+            controller.Apple = controller.PlaceApple(board);
 
-            var lastDir = new Direction(Direction.Down);
+            var lastDirection = new Direction(Direction.Down);
 
-            var t = new Stopwatch();
-            t.Start();
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
 
-            while (!ctrlr.GameOver)
+            while (!controller.GameOver)
             {
-                ctrlr.CheckKeys(lastDir);
+                controller.CheckKeys(lastDirection);
 
-                if (ctrlr.Pause) continue;
-                if (t.ElapsedMilliseconds < 100)
+                if (controller.Pause) continue;
+                if (stopwatch.ElapsedMilliseconds < 100)
                     continue;
 
-                t.Restart();
+                stopwatch.Restart();
 
                 var tail = new Point(snake.GetEnd());
                 var head = new Point(snake.GetHead());
-                var newHead = ctrlr.MoveHead(head);
+                var newHead = controller.MoveHead(head);
 
                 if (IsWindowCollide(newHead, board))
-                    ctrlr.GameOver = true;
+                    controller.GameOver = true;
 
 
-                if (ctrlr.IsHeadOnApple(newHead))
-                    ctrlr.OnAppleEaten(board);
+                if (controller.IsHeadOnApple(newHead))
+                    controller.OnAppleEaten(board);
 
-                if (!ctrlr.InUse)
+                if (!controller.InUse)
                 {
-                    ctrlr.CheckForSelfCollide(newHead);
+                    controller.CheckForSelfCollide(newHead);
                 }
 
 
-                if (ctrlr.GameOver) continue;
-                ctrlr.WriteTail(snake, tail, newHead);
-                lastDir = snake.GetDirection();
+                if (controller.GameOver) continue;
+                controller.WriteTail(snake, tail, newHead);
+                lastDirection = snake.GetDirection();
             }
 
         }

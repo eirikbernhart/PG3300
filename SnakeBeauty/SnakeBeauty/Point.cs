@@ -10,9 +10,9 @@ namespace SnakeBeauty
 
         public static Point GetRandomPoint(Board board)
         {
-            var rnd = new Random();
-            var x = rnd.Next(0, board.Width);
-            var y = rnd.Next(0, board.Height);
+            var random = new Random();
+            var x = random.Next(0, board.Width);
+            var y = random.Next(0, board.Height);
             return new Point(x, y);
         }
     }

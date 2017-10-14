@@ -3,7 +3,7 @@
 namespace SnakeBeauty
 {
     // Defines the boundaries of the world (game board/console)
-    class Board
+    internal class Board
     {
         public int Width { get; }
         public int Height { get; }

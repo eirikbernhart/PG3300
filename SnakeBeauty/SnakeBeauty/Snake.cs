@@ -5,12 +5,12 @@ namespace SnakeBeauty
 {
     internal class Snake
     {
-        public Direction MoveDir;
+        public Direction MoveDirection;
         public List<Point> Points { get; }
         public Snake()
         {
             Points = new List<Point>();
-            MoveDir = new Direction(2);
+            MoveDirection = new Direction(2);
         }
 
         public int Length()
@@ -51,12 +51,12 @@ namespace SnakeBeauty
 
         public Direction GetDirection()
         {
-            return MoveDir;
+            return MoveDirection;
         }
 
         public short ChangeDirection(short s)
         {
-            return MoveDir.Set(s);
+            return MoveDirection.Set(s);
         }
     }
 }
