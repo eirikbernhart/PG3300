@@ -4,6 +4,8 @@ namespace SnakeBeauty
     //Keeps track of a certain direction given upon instantiating
     public class Direction
     {
+        
+
         public override int GetHashCode()
         {
             // ReSharper disable once NonReadonlyMemberInGetHashCode
@@ -51,6 +53,16 @@ namespace SnakeBeauty
         public static bool operator !=(Direction a, Direction b) { return !(a == b); }
         public static bool operator !=(Direction a, int b) { return !(a == b); }
 
+        //Correct
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != GetType()) return false;
+            return Equals((Direction)obj);
+        }
+        //Fail1
+        /*
         public override bool Equals(object obj)
         {
             while (true)
@@ -59,5 +71,21 @@ namespace SnakeBeauty
                 return _direction == s || Equals(obj);
             }
         }
+        */
+        //Fail2
+        /*
+        public override bool Equals(object obj)
+        {
+            if (obj.GetType() == typeof(short))
+            {
+                short s = (short) obj;
+                if (direction == s)
+                    return true;
+            }
+            return Equals(obj);
+        }
+        */
+
+
     }
 }

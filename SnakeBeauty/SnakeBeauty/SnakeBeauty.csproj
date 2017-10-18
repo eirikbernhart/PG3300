@@ -45,6 +45,7 @@
     <Compile Include="Board.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="Direction.cs" />
+    <Compile Include="DirectionTest.cs" />
     <Compile Include="Point.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Snake.cs" />
